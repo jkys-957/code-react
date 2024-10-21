@@ -75,7 +75,7 @@ public class TodoServiceImpl implements TodoService {
   @Override
   public PageResponseDTO<TodoDTO> list(PageRequestDTO pageRequestDTO) {
 
-    Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1,   // 1페이지가 0이므로 주의
+    Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1,   // 1페이지가 0이므로 주의할 것
                                            pageRequestDTO.getSize(),
                           Sort.by("tno").descending());
 
