@@ -11,13 +11,9 @@ import lombok.Data;
 public class PageResponseDTO<E> {
 
   private List<E> dtoList;
-  
   private List<Integer> pageNumList;
-
   private PageRequestDTO pageRequestDTO;
-
   private boolean prev, next;
-
   private int totalCount, prevPage, nextPage, totalPage, current;
 
   @Builder(builderMethodName = "withAll")
@@ -45,6 +41,6 @@ public class PageResponseDTO<E> {
       this.nextPage = end + 1;
     }
     this.totalPage = this.pageNumList.size();
-    this.current = pageRequestDTO.getPage();
+    this.current = pageRequestDTO.getPage();  
   }
 }

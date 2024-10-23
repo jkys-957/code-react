@@ -28,7 +28,6 @@ public class TodoServiceImpl implements TodoService {
 
   // 자동주입 대상은 final 로
   private final ModelMapper modelMapper;
-
   private final TodoRepository todoRepository;
 
   @Override

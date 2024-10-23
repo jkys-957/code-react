@@ -58,6 +58,8 @@ public class TodoRepositoryTests {
     todo.changeDueDate(LocalDate.of(2024, 10, 22));
 
     todoRepository.save(todo);
+
+    log.info(todo);
   }
 
   @Test
