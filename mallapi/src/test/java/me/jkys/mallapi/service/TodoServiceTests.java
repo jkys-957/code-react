@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import lombok.extern.log4j.Log4j2;
+import me.jkys.mallapi.dto.PageRequestDTO;
+import me.jkys.mallapi.dto.PageResponseDTO;
 import me.jkys.mallapi.dto.TodoDTO;
 
 @SpringBootTest
@@ -36,5 +38,16 @@ public class TodoServiceTests {
     TodoDTO todoDTO = todoService.get(tno);
 
     log.info(todoDTO);
+  }
+
+  @Test
+  public void testList() {
+    PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                                                  .page(2)
+                                                  .size(10)
+                                                  .build();
+    PageResponseDTO<TodoDTO> response = todoService.list(pageRequestDTO);
+
+    log.info(response);
   }
 }
