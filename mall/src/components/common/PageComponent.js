@@ -21,9 +21,11 @@ const PageComponent = ({serverData, movePage}) => {
         serverData.next ?
         <div className="w-16 p-2 m-2 font-bold text-center text-blue-400"
               onClick={() => movePage({page:serverData.nextPage})}>
-        next
+        Next
         </div> : <></>
       }
     </div>
   )
 }
+
+export default PageComponent;
