@@ -33,14 +33,16 @@ const useCustomMove = () => {
     }
 
     setRefresh(!refresh)
-    navigate({pathname: '../list', search:queryStr})
+    navigate({
+      pathname: '../list',
+      search:queryStr})
   }
 
   const moveToModify = (num) => {
     console.log(queryDefault)
 
     navigate({
-      pathname: '../modify/${num}',
+      pathname: `../modify/${num}`,
       search: queryDefault  // 수정 시에 기존의 쿼리 스트링 유지를 위해
     })
   }

@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { postAdd } from '../../api/todoApi'
+import ResultModal from '../common/ResultModal'
+import useCustomMove from '../../hooks/useCustomMove'
 
 const initState = {
   title: '',
@@ -10,6 +12,11 @@ const initState = {
 const AddComponent = () => {
 
   const [todo, setTodo] = useState({...initState})
+
+  // 결과 데이터가 있는 경우에는 ResultModal을 보여준다.
+  const [result, setResult] = useState(null)  // 결과 상태
+
+  const {moveToList} = useCustomMove()  // useCustomMove 활용
 
   const handleChangeTodo = (e) => {
     todo[e.target.name] = e.target.value
@@ -22,14 +29,25 @@ const AddComponent = () => {
     .then(result => {
       console.log(result)
       //초기화
+      setResult(result.TNO) // 결과 데이터 변경
       setTodo({...initState})
+
     }).catch(e => {
-      console.log(e)
+      console.error(e)
     })
+  }
+
+  const closeModal = () => {
+    setResult(null)
+    moveToList()   // moveToList() 호출
   }
 
   return (
     <div className="p-4 m-2 mt-10 border-2 border-sky-200">
+      
+      {/* 모달 처리 */}
+      { result ? <ResultModal title={'Add Result'} content={`New ${result} Added`} callbackFn={closeModal}/>: <></>}
+
       <div className="flex justify-center">
         <div className="relative flex flex-wrap items-stretch w-full mb-4">
           <div className="w-1/5 p-6 font-bold text-right">TITLE</div>
