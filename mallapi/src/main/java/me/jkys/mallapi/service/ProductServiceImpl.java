@@ -1,6 +1,7 @@
 package me.jkys.mallapi.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -89,6 +90,74 @@ public class ProductServiceImpl implements ProductService {
     });
 
     return product;
+  }
+
+  // Product, ProductImage를 하나의 ProductDTO로 변환하는 기능이 필요하므로 entityToDTO()라는 메서드를 생성해서 처리한다.
+  @Override
+  public ProductDTO get(Long pno) {
+
+    java.util.Optional<Product> result = productRepository.selectOne(pno);
+
+    Product product = result.orElseThrow();
+
+    ProductDTO productDTO = entityToDTO(product);
+
+    return productDTO;
+
+  }
+
+  private ProductDTO entityToDTO(Product product) {
+    ProductDTO productDTO = ProductDTO.builder()
+      .pno(product.getPno())
+      .pname(product.getPname())
+      .pdesc(product.getPdesc())
+      .price(product.getPrice())
+      .build();
+
+      List<ProductImage> imageList = product.getImageList();
+      
+      if (imageList == null || imageList.size() == 0) {
+        return productDTO;
+      }
+
+      List<String> fileNameList = imageList.stream().map(productImage -> productImage.getFileName()).toList();
+
+      productDTO.setUploadFileNames(fileNameList);
+
+      return productDTO;
+
+  }
+
+  @Override
+  public void modify(ProductDTO productDTO) {
+    
+    // step1 read
+    Optional<Product> result = productRepository.findById(productDTO.getPno());
+
+    Product product = result.orElseThrow();
+
+    // change pname, pdesc, price
+    product.changeName(productDTO.getPname());
+    product.changeDesc(productDTO.getPdesc());
+    product.changePrice(productDTO.getPrice());
+
+    // upload File -- clear first
+    product.clearList();
+
+    List<String> uploadFileNames = productDTO.getUploadFileNames();
+
+    if (uploadFileNames != null && uploadFileNames.size() > 0) {
+      uploadFileNames.stream().forEach(uploadName -> {
+        product.addImageString(uploadName);
+      });
+    }
+    productRepository.save(product);
+  }
+
+  @Override
+  public void remove(Long pno) {
+    
+    productRepository.updateToDelete(pno, true);
   }
 
 }

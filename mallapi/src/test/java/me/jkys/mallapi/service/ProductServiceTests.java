@@ -46,4 +46,16 @@ public class ProductServiceTests {
       productService.register(productDTO);
   }
 
+  // 조회 기능 역시 ProductServiceTests를 이용해서 동작 여부를 확인한다.
+  @Test
+  public void testRead() {
+    //실제 존재하는 번호로 테스트
+    Long pno = 12L;
+
+    ProductDTO productDTO = productService.get(pno);
+
+    log.info(productDTO);
+    log.info(productDTO.getUploadFileNames());
+  }
+
 }
